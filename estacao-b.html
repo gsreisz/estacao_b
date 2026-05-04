@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estação B - Cardápio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8001C;
+    --red-dark: #C0001A;
+    --orange: #FF6B00;
+    --orange-light: #FF8C3A;
+    --white: #fff;
+    --bg: #f5f5f5;
+    --card-bg: #fff;
+    --text: #1a1a1a;
+    --text-muted: #777;
+    --border: #eee;
+    --tag-new: #FF6B00;
+    --tag-hot: #E8001C;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+
+  .logo {
+    background: var(--white);
+    color: var(--red);
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.6rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .search-bar {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 16px;
+    background: #fff;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 6px 14px;
+    gap: 8px;
+  }
+
+  .search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  .cart-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: var(--white);
+    color: var(--red);
+    font-size: 0.65rem;
+    font-weight: 900;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* BANNER */
+  .banner {
+    background: linear-gradient(135deg, #E8001C 0%, #FF6B00 60%, #ff8c3a 100%);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .banner::before {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -30px;
+    width: 220px;
+    height: 220px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50%;
+  }
+
+  .banner::after {
+    content: '';
+    position: absolute;
+    right: 40px;
+    bottom: -60px;
+    width: 160px;
+    height: 160px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+
+  .banner-label {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .banner h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3.2rem;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner p {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    margin-top: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+  }
+
+  .banner-dots span.active {
+    background: #fff;
+    width: 22px;
+    border-radius: 4px;
+  }
+
+  /* CATEGORIES */
+  .categories {
+    background: var(--white);
+    padding: 12px 20px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 58px;
+    z-index: 90;
+  }
+
+  .categories::-webkit-scrollbar { display: none; }
+
+  .cat-btn {
+    white-space: nowrap;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    background: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-muted);
+  }
+
+  .cat-btn.active, .cat-btn:hover {
+    background: var(--red);
+    border-color: var(--red);
+    color: #fff;
+  }
+
+  /* MAIN LAYOUT */
+  .main-layout {
+    display: flex;
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    gap: 20px;
+  }
+
+  /* MENU */
+  .menu-area {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .section-title .emoji { font-size: 1.1rem; }
+
+  /* PRODUCT GRID */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .product-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+
+  .product-img {
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(135deg, #FF6B00, #E8001C);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    position: relative;
+  }
+
+  .tag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+
+  .tag.novo { background: var(--tag-new); }
+  .tag.mais-pedido { background: var(--tag-hot); }
+
+  .product-info {
+    padding: 10px 12px 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .product-name {
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+
+  .product-desc {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price-old {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .price {
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: var(--red);
+  }
+
+  .add-btn {
+    background: var(--red);
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    flex-shrink: 0;
+  }
+
+  .add-btn:hover { background: var(--red-dark); transform: scale(1.1); }
+
+  .ver-mais-btn {
+    display: block;
+    margin: -10px auto 24px;
+    background: none;
+    border: 2px solid var(--red);
+    color: var(--red);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 7px 24px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .ver-mais-btn:hover { background: var(--red); color: #fff; }
+
+  /* CART SIDEBAR */
+  .cart-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-sidebar::-webkit-scrollbar { width: 4px; }
+  .cart-sidebar::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cart-title {
+    font-size: 1rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cart-title .back { color: var(--text-muted); font-size: 0.85rem; }
+
+  .limpar-btn {
+    color: var(--red);
+    font-weight: 700;
+    font-size: 0.82rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cart-item-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #FF6B00, #E8001C);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .cart-item-info { flex: 1; }
+
+  .cart-item-name {
+    font-size: 0.82rem;
+    font-weight: 800;
+    margin-bottom: 3px;
+  }
+
+  .cart-item-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .cart-item-price {
+    font-size: 0.88rem;
+    font-weight: 900;
+    color: var(--red);
+  }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .qty-btn {
+    background: var(--red);
+    border: none;
+    color: #fff;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .qty-num {
+    font-weight: 800;
+    font-size: 0.85rem;
+    min-width: 16px;
+    text-align: center;
+  }
+
+  /* SUGESTÕES */
+  .sugestoes {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sugestoes-title {
+    font-size: 0.82rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .sugestoes-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .sugestoes-list::-webkit-scrollbar { display: none; }
+
+  .sug-card {
+    flex-shrink: 0;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .sug-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #FF6B00, #E8001C);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+
+  .sug-price {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--red);
+  }
+
+  /* FORM */
+  .cart-form {
+    padding: 12px 16px;
+  }
+
+  .form-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .form-group label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .form-group input, .form-group textarea {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.78rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: var(--red);
+  }
+
+  /* PAGAMENTO */
+  .pagamento-options {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pag-btn {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 10px;
+    background: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    color: var(--text);
+  }
+
+  .pag-btn.active, .pag-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: #fff5f5;
+  }
+
+  /* ENTREGA */
+  .entrega-options {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .entrega-btn {
+    flex: 1;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.2s;
+  }
+
+  .entrega-btn.active {
+    border-color: var(--red);
+    background: #fff5f5;
+    color: var(--red);
+  }
+
+  /* CONFIRMAR */
+  .cart-footer {
+    background: var(--red);
+    padding: 14px 16px;
+    border-radius: 0 0 16px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cart-total-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .cart-total-value {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  .confirmar-btn {
+    background: #fff;
+    color: var(--red);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 0.88rem;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .confirmar-btn:hover { opacity: 0.9; }
+
+  /* ADICIONAR MAIS */
+  .add-mais-btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 16px 12px;
+    background: none;
+    border: 2px solid var(--red);
+    color: var(--red);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.82rem;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .add-mais-btn:hover { background: var(--red); color: #fff; }
+
+  /* BOTTOM TOTAL (mobile only) */
+  .bottom-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--red);
+    color: #fff;
+    padding: 14px 20px;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 200;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.2);
+  }
+
+  .bottom-bar.visible { display: flex; }
+
+  .bottom-total { font-size: 0.8rem; }
+  .bottom-total strong { font-size: 1rem; display: block; }
+  .bottom-bar-btn {
+    background: #fff;
+    color: var(--red);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-size: 0.88rem;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(40px);
+    background: #1a1a1a;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .cart-sidebar { display: none; }
+    .bottom-bar.visible { display: flex; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .main-layout { padding: 16px 12px 80px; }
+  }
+
+  @media (max-width: 480px) {
+    .product-grid { grid-template-columns: 1fr 1fr; }
+    .banner h1 { font-size: 2.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">B</div>
+  <div class="search-bar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" placeholder="Buscar no cardápio...">
+  </div>
+  <button class="cart-btn" onclick="toggleCart()">
+    🛒
+    <span class="cart-count" id="cart-count">0</span>
+  </button>
+</header>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-label">Estação B · Burger & Mais</div>
+  <h1>OS MAIS<br>PEDIDOS<br>DA CASA</h1>
+  <p>Tradição, sabor e entrega rápida 🔥</p>
+  <div class="banner-dots">
+    <span class="active"></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="categories">
+  <button class="cat-btn active" onclick="filterCat(this, 'hamburgueres')">🍔 Hambúrgueres</button>
+  <button class="cat-btn" onclick="filterCat(this, 'dogao')">🌭 Dogão & Estação</button>
+  <button class="cat-btn" onclick="filterCat(this, 'combos')">🍟 Combos</button>
+  <button class="cat-btn" onclick="filterCat(this, 'porcoes')">🍗 Porções</button>
+  <button class="cat-btn" onclick="filterCat(this, 'acai')">🍨 Açaí & Sorvetes</button>
+  <button class="cat-btn" onclick="filterCat(this, 'bebidas')">🥤 Bebidas</button>
+  <button class="cat-btn" onclick="filterCat(this, 'guloseimas')">🍬 Guloseimas</button>
+</div>
+
+<!-- MAIN -->
+<div class="main-layout">
+
+  <!-- MENU AREA -->
+  <div class="menu-area">
+
+    <!-- HAMBÚRGUERES -->
+    <div class="menu-section" id="sec-hamburgueres">
+      <div class="section-title"><span class="emoji">🍔</span> Hambúrgueres</div>
+      <div class="product-grid" id="grid-hamburgueres"></div>
+      <button class="ver-mais-btn" onclick="verMais('hamburgueres')">Ver mais</button>
+    </div>
+
+    <!-- DOGÃO -->
+    <div class="menu-section" id="sec-dogao">
+      <div class="section-title"><span class="emoji">🌭</span> Dogão & Estação 30cm</div>
+      <div class="product-grid" id="grid-dogao"></div>
+      <button class="ver-mais-btn">Ver mais</button>
+    </div>
+
+    <!-- COMBOS -->
+    <div class="menu-section" id="sec-combos">
+      <div class="section-title"><span class="emoji">🍟</span> Combos</div>
+      <div class="product-grid" id="grid-combos"></div>
+      <button class="ver-mais-btn">Ver mais</button>
+    </div>
+
+    <!-- PORÇÕES -->
+    <div class="menu-section" id="sec-porcoes">
+      <div class="section-title"><span class="emoji">🍗</span> Porções</div>
+      <div class="product-grid" id="grid-porcoes"></div>
+      <button class="ver-mais-btn">Ver mais</button>
+    </div>
+
+    <!-- AÇAÍ -->
+    <div class="menu-section" id="sec-acai">
+      <div class="section-title"><span class="emoji">🍨</span> Açaí & Sorvetes</div>
+      <div class="product-grid" id="grid-acai"></div>
+      <button class="ver-mais-btn">Ver mais</button>
+    </div>
+
+    <!-- BEBIDAS -->
+    <div class="menu-section" id="sec-bebidas">
+      <div class="section-title"><span class="emoji">🥤</span> Bebidas</div>
+      <div class="product-grid" id="grid-bebidas"></div>
+    </div>
+
+    <!-- GULOSEIMAS -->
+    <div class="menu-section" id="sec-guloseimas">
+      <div class="section-title"><span class="emoji">🍬</span> Guloseimas</div>
+      <div class="product-grid" id="grid-guloseimas"></div>
+    </div>
+
+  </div>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <div class="cart-title">
+        <span class="back">&#8592;</span> Carrinho
+      </div>
+      <button class="limpar-btn" onclick="clearCart()">Limpar</button>
+    </div>
+
+    <div id="cart-items-list">
+      <div style="padding:24px 16px; text-align:center; color:#aaa; font-size:0.85rem;">
+        Seu carrinho está vazio 🛒
+      </div>
+    </div>
+
+    <div class="sugestoes" id="sugestoes-section" style="display:none;">
+      <div class="sugestoes-title">Peça também</div>
+      <div class="sugestoes-list" id="sugestoes-list"></div>
+    </div>
+
+    <button class="add-mais-btn">+ Adicionar mais produtos</button>
+
+    <div class="cart-form">
+      <div class="form-title">Preencha com seus dados</div>
+      <div class="form-row">
+        <div class="form-group" style="flex:1">
+          <label>Nome</label>
+          <input type="text" placeholder="Seu nome">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:2">
+          <label>Endereço</label>
+          <input type="text" placeholder="Rua, número">
+        </div>
+        <div class="form-group" style="flex:1">
+          <label>Complemento</label>
+          <input type="text" placeholder="Apto, bloco">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Número de Telefone</label>
+          <input type="text" placeholder="(00) 00000-0000">
+        </div>
+        <div class="form-group">
+          <label>Aniversário</label>
+          <input type="text" placeholder="DD/MM/AAAA">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:1">
+          <label>Pagamento</label>
+          <div class="pagamento-options">
+            <button class="pag-btn active" onclick="selectPag(this)">💵 Pix</button>
+            <button class="pag-btn" onclick="selectPag(this)">💳 Cartão de Crédito</button>
+            <button class="pag-btn" onclick="selectPag(this)">💴 Dinheiro</button>
+          </div>
+        </div>
+        <div class="form-group" style="flex:1">
+          <label>Observações</label>
+          <textarea rows="3" placeholder="Alguma observação?"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tipo de Entrega</label>
+        <div class="entrega-options">
+          <button class="entrega-btn active" onclick="selectEntrega(this)">🛵 Delivery</button>
+          <button class="entrega-btn" onclick="selectEntrega(this)">🏠 Retirada</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-footer">
+      <div>
+        <div class="cart-total-label">Total do pedido</div>
+        <div class="cart-total-value" id="cart-total">R$ 0,00</div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);">(inclui R$ 6,00 de entrega)</div>
+      </div>
+      <button class="confirmar-btn" onclick="confirmarPedido()">Confirmar Pedido</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM BAR (mobile) -->
+<div class="bottom-bar" id="bottom-bar">
+  <div class="bottom-total">
+    <span>Total do pedido</span>
+    <strong id="bottom-total-val">R$ 0,00</strong>
+  </div>
+  <button class="bottom-bar-btn" onclick="confirmarPedido()">Ver Carrinho 🛒</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const products = {
+  hamburgueres: [
+    { id: 1, name: 'Misto Tradicional', desc: 'Tradicional sabor Estação B', price: 6.44, emoji: '🍔' },
+    { id: 2, name: 'Mão com Ovo Top', desc: 'Com ovo estrelado especial', price: 5.49, emoji: '🍔', tag: 'mais-pedido' },
+    { id: 3, name: 'Egg Burger', desc: 'Burger com ovo e queijo', price: 8.95, emoji: '🍔' },
+    { id: 4, name: 'X-Salada Top', desc: 'Com alface, tomate e queijo', price: 5.35, emoji: '🍔', tag: 'novo' },
+    { id: 5, name: 'Duplo X – Burger Top', desc: 'Dois smash burgers suculentos', price: 11.49, emoji: '🍔', oldPrice: 12.99 },
+    { id: 6, name: 'X-Bacon', desc: 'Com bacon crocante artesanal', price: 14.63, emoji: '🍔' },
+  ],
+  dogao: [
+    { id: 10, name: 'Dogão Tradicional 30cm', desc: 'Molho especial da casa', price: 5.50, emoji: '🌭' },
+    { id: 11, name: 'Dogão Malaqueite Top', desc: 'Com catupiry e bacon', price: 18.99, emoji: '🌭', tag: 'mais-pedido' },
+    { id: 12, name: 'Dogão Malagueta', desc: 'Sabor ardente especial', price: 10.99, emoji: '🌭' },
+    { id: 13, name: 'Misto Execução 30cm', desc: 'O melhor da execução', price: 15.49, emoji: '🌭' },
+    { id: 14, name: 'Burgão Dourlinho', desc: 'Receita exclusiva Estação B', price: 24.95, emoji: '🌭' },
+    { id: 15, name: 'Duplo Doglinho Tradicional', desc: '2 doglinhoss na brasa', price: 13.99, emoji: '🌭', tag: 'novo' },
+  ],
+  combos: [
+    { id: 20, name: 'Combo Hambúrguer + Refrigerante + Batata Gorda', desc: 'O combo completo da casa', price: 35.99, emoji: '🍟' },
+    { id: 21, name: 'Combo 3 Amendoins + Refri Uma', desc: 'Petisco + bebida gelada', price: 26.95, oldPrice: 29.99, emoji: '🍟', tag: 'mais-pedido' },
+    { id: 22, name: 'Combo 1 Doglinho Especial + Batata Gorda', desc: 'Dog + batata crocante', price: 7.00, emoji: '🍟' },
+    { id: 23, name: 'Combo Cachorro + Fritas + Hambúrguer + Açaí 300ml', desc: 'Mega combo família', price: 12.88, emoji: '🍟', tag: 'novo' },
+    { id: 24, name: 'Combo Cogulas Tradicionais', desc: 'Acompanhamento especial', price: 8.99, emoji: '🍟' },
+  ],
+  porcoes: [
+    { id: 30, name: 'Batata Crispe Crocante', desc: 'Crocante por fora, macia por dentro', price: 11.93, emoji: '🍗' },
+    { id: 31, name: 'Batata Grandão 400g', desc: 'Para compartilhar!', price: 15.99, emoji: '🍗', tag: 'mais-pedido' },
+    { id: 32, name: 'Batata Gourmet Cheddar Bacon, Calabresa 50g', desc: 'Batata premium', price: 38.90, emoji: '🍗' },
+    { id: 33, name: 'Costelão de Frango M', desc: 'Costelão grelhado suculento', price: 24.90, emoji: '🍗' },
+    { id: 34, name: 'Nuggets 300g', desc: '10 nuggets crocantes', price: 14.11, emoji: '🍗' },
+  ],
+  acai: [
+    { id: 40, name: 'Food Table Lanete Santana', desc: 'Açaí cremoso 300ml', price: 38.72, emoji: '🍨' },
+    { id: 41, name: 'Iogurte Açaí 300ml', desc: 'Iogurte com açaí natural', price: 9.99, emoji: '🍨', tag: 'novo' },
+    { id: 42, name: 'Pudim Torta de Limão com Leite, Santana 50g', desc: 'Sobremesa especial', price: 14.99, emoji: '🍨' },
+    { id: 43, name: 'Açaí 270ml', desc: 'Açaí puro da Amazônia', price: 8.50, emoji: '🍨', tag: 'mais-pedido' },
+    { id: 44, name: 'Shake de Açaí', desc: 'Shake gelado cremoso', price: 14.18, oldPrice: 16.99, emoji: '🍨' },
+  ],
+  bebidas: [
+    { id: 50, name: 'RedBull Lata Tradicional 250ml', desc: '', price: 12.49, emoji: '🥤' },
+    { id: 51, name: 'Laranjinha 1 litro', desc: '', price: 7.99, emoji: '🥤' },
+    { id: 52, name: 'Suco de Laranja Natural 500ml', desc: '', price: 3.49, emoji: '🥤' },
+    { id: 53, name: 'Água Mineral 500ml', desc: '', price: 3.49, emoji: '💧' },
+    { id: 54, name: 'Coca-Cola 2 litros', desc: '', price: 15.99, emoji: '🥤', tag: 'mais-pedido' },
+    { id: 55, name: 'Água com gás 500ml', desc: '', price: 3.49, emoji: '💧' },
+  ],
+  guloseimas: [
+    { id: 60, name: 'Mi de Melancia 1 caixa', desc: '', price: 1.60, emoji: '🍬' },
+    { id: 61, name: 'Tubaina Frost 7g', desc: '', price: 1.39, emoji: '🍭' },
+    { id: 62, name: 'Mandarilts', desc: '', price: 1.70, emoji: '🍬' },
+    { id: 63, name: 'Nigo Bom', desc: '', price: 1.50, emoji: '🍭' },
+    { id: 64, name: 'Cera de Banana', desc: '', price: 1.10, emoji: '🍬' },
+    { id: 65, name: 'Trident', desc: '', price: 1.20, emoji: '🍬' },
+  ],
+};
+
+let cart = [];
+
+function renderProducts() {
+  Object.keys(products).forEach(cat => {
+    const grid = document.getElementById('grid-' + cat);
+    if (!grid) return;
+    grid.innerHTML = products[cat].map(p => `
+      <div class="product-card" onclick="addToCart(${p.id}, '${cat}')">
+        <div class="product-img">${p.emoji}
+          ${p.tag ? `<span class="tag ${p.tag}">${p.tag === 'novo' ? 'Novo' : 'Mais Pedido'}</span>` : ''}
+        </div>
+        <div class="product-info">
+          <div>
+            <div class="product-name">${p.name}</div>
+            ${p.desc ? `<div class="product-desc">${p.desc}</div>` : ''}
+          </div>
+          <div class="price-row">
+            <div>
+              ${p.oldPrice ? `<div class="price-old">R$ ${p.oldPrice.toFixed(2).replace('.', ',')}</div>` : ''}
+              <div class="price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
+            </div>
+            <button class="add-btn" onclick="event.stopPropagation(); addToCart(${p.id}, '${cat}')">+</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  });
+  renderSugestoes();
+}
+
+function addToCart(id, cat) {
+  const p = products[cat].find(x => x.id === id);
+  if (!p) return;
+  const existing = cart.find(x => x.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...p, qty: 1 });
+  }
+  updateCart();
+  showToast(`${p.emoji} ${p.name} adicionado!`);
+}
+
+function removeFromCart(id) {
+  const idx = cart.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  if (cart[idx].qty > 1) {
+    cart[idx].qty--;
+  } else {
+    cart.splice(idx, 1);
+  }
+  updateCart();
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
+}
+
+function updateCart() {
+  const total = cart.reduce((s, x) => s + x.price * x.qty, 0) + (cart.length ? 6 : 0);
+  const totalStr = 'R$ ' + total.toFixed(2).replace('.', ',');
+  document.getElementById('cart-total').textContent = totalStr;
+  document.getElementById('bottom-total-val').textContent = totalStr;
+  document.getElementById('cart-count').textContent = cart.reduce((s, x) => s + x.qty, 0);
+
+  const list = document.getElementById('cart-items-list');
+  if (cart.length === 0) {
+    list.innerHTML = '<div style="padding:24px 16px; text-align:center; color:#aaa; font-size:0.85rem;">Seu carrinho está vazio 🛒</div>';
+    document.getElementById('sugestoes-section').style.display = 'none';
+    document.getElementById('bottom-bar').classList.remove('visible');
+  } else {
+    list.innerHTML = cart.map(item => `
+      <div class="cart-item">
+        <div class="cart-item-img">${item.emoji}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          ${item.desc ? `<div class="cart-item-desc">${item.desc}</div>` : ''}
+          <div class="cart-item-price">R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</div>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="removeFromCart(${item.id})">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="addFromCart(${item.id})">+</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    document.getElementById('sugestoes-section').style.display = 'block';
+    document.getElementById('bottom-bar').classList.add('visible');
+  }
+}
+
+function addFromCart(id) {
+  for (const cat of Object.keys(products)) {
+    const p = products[cat].find(x => x.id === id);
+    if (p) { addToCart(id, cat); return; }
+  }
+}
+
+function renderSugestoes() {
+  const all = Object.values(products).flat();
+  const picks = all.filter((_, i) => i % 3 === 0).slice(0, 6);
+  document.getElementById('sugestoes-list').innerHTML = picks.map(p => `
+    <div class="sug-card" onclick="addToCart(${p.id}, findCat(${p.id}))">
+      <div class="sug-img">${p.emoji}</div>
+      <div class="sug-price">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
+    </div>
+  `).join('');
+}
+
+window.findCat = function(id) {
+  for (const cat of Object.keys(products)) {
+    if (products[cat].find(x => x.id === id)) return cat;
+  }
+  return 'hamburgueres';
+};
+
+function filterCat(btn, cat) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const sec = document.getElementById('sec-' + cat);
+  if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function selectPag(btn) {
+  document.querySelectorAll('.pag-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function selectEntrega(btn) {
+  document.querySelectorAll('.entrega-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleCart() {
+  const sidebar = document.getElementById('cart-sidebar');
+  sidebar.style.display = sidebar.style.display === 'none' ? 'flex' : 'none';
+  sidebar.style.flexDirection = 'column';
+}
+
+function verMais(cat) {
+  showToast('Carregando mais produtos...');
+}
+
+function confirmarPedido() {
+  if (cart.length === 0) { showToast('Adicione itens ao carrinho primeiro!'); return; }
+  showToast('✅ Pedido confirmado! Aguarde a confirmação.');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+renderProducts();
+</script>
+
+</body>
+</html>

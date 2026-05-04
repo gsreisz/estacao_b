@@ -6,6 +6,28 @@
 <title>Estação B - Cardápio</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+  
+
+  .banner_infos {
+    
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+
+  .banner-img{
+
+    display: flex;
+    align-content: center;
+    width: 1200px;
+    max-width: 100%;
+    border-radius: 50px;
+
+  }
   :root {
     --red: #E8001C;
     --red-dark: #C0001A;
@@ -101,14 +123,14 @@
 
   /* BANNER */
   .banner {
-    background: linear-gradient(135deg, #E8001C 0%, #FF6B00 60%, #ff8c3a 100%);
-    padding: 30px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    min-height: 180px;
-    position: relative;
-    overflow: hidden;
+   background: linear-gradient(135deg, #E8001C 0%, #FF6B00 60%, #ff8c3a 100%);
+  padding: 30px 20px;
+  min-height: 270px;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+
   }
 
   .banner::before {
@@ -781,14 +803,24 @@
 
 <!-- BANNER -->
 <div class="banner">
-  <div class="banner-label">Estação B · Burger & Mais</div>
-  <h1>OS MAIS<br>PEDIDOS<br>DA CASA</h1>
-  <p>Tradição, sabor e entrega rápida 🔥</p>
-  <div class="banner-dots">
-    <span class="active"></span>
-    <span></span>
-    <span></span>
-  </div>
+  
+    <div class="banner_infos">
+
+      <div class="texto_banner_geral">
+        
+        <div class="texto_banner_interno">
+          
+    
+          
+        </div>
+        
+      </div>
+      
+      <img src="imagens/BANNER_PRODUTOS.png" alt="banner-2" class="banner-img">
+      
+    </div>
+    
+
 </div>
 
 <!-- CATEGORIES -->
